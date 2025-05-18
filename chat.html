@@ -38,23 +38,23 @@
             --chat-message-own-bg: color-mix(in srgb, var(--chat-accent-color) 30%, #ffffff 70%);
             --chat-scrollbar-thumb: var(--chat-accent-color);
             --chat-scrollbar-track: var(--chat-panel-bg);
-            --font-main: 'Nunito', sans-serif; /* Ensures pink theme uses Nunito */
+            --font-main: 'Nunito', sans-serif;
         }
         /* --- Pink Dark (Matches main page Pink Dark) --- */
         body.theme-pink.mode-dark {
             --chat-bg: #59394f;
-            --chat-panel-bg: #6e4960; /* This was key fix for main page, apply here */
+            --chat-panel-bg: #6e4960;
             --chat-text-color: #f8eaf0;
             --chat-accent-color: #ff9cc8;
-            --chat-input-bg: #4a2a40; /* Darker input bg */
+            --chat-input-bg: #4a2a40;
             --chat-input-border: #ff9cc830;
             --chat-send-button-bg: var(--chat-accent-color);
             --chat-send-button-text: #4a2a40;
-            --chat-message-other-bg: #7e5770; /* Using panel secondary for distinctness */
+            --chat-message-other-bg: #7e5770;
             --chat-message-own-bg: color-mix(in srgb, var(--chat-accent-color) 30%, #59394f 70%);
             --chat-scrollbar-thumb: var(--chat-accent-color);
             --chat-scrollbar-track: #4a2a40;
-            --font-main: 'Nunito', sans-serif; /* Ensures pink theme uses Nunito */
+            --font-main: 'Nunito', sans-serif;
         }
 
         /* --- Neon Dark (Matches main page Neon Dark) --- */
@@ -67,11 +67,11 @@
             --chat-input-border: #00ffff50;
             --chat-send-button-bg: var(--chat-accent-color);
             --chat-send-button-text: #0a0f18;
-            --chat-message-other-bg: #222b38; /* Slightly different shade */
+            --chat-message-other-bg: #222b38;
             --chat-message-own-bg: color-mix(in srgb, var(--chat-accent-color) 25%, #0a0f18 75%);
             --chat-scrollbar-thumb: var(--chat-accent-color);
             --chat-scrollbar-track: #0e131c;
-            --font-main: 'Roboto', sans-serif; /* For Neon chat text */
+            --font-main: 'Roboto', sans-serif;
         }
         /* --- Neon Light (Matches main page Neon Light) --- */
         body.theme-neon.mode-light {
@@ -87,11 +87,14 @@
             --chat-message-own-bg: color-mix(in srgb, var(--chat-accent-color) 20%, #ffffff 80%);
             --chat-scrollbar-thumb: var(--chat-accent-color);
             --chat-scrollbar-track: #d4ddea;
-            --font-main: 'Roboto', sans-serif; /* For Neon chat text */
+            --font-main: 'Roboto', sans-serif;
         }
 
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+             height: 100%; /* Ensure html takes full height */
+        }
 
         body {
             font-family: var(--font-main);
@@ -99,21 +102,24 @@
             color: var(--chat-text-color);
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: calc(var(--vh, 1vh) * 100); /* JS-calculated height */
             overflow: hidden;
             padding: 10px;
             font-size: 15px;
             transition: background-color 0.3s ease, color 0.3s ease;
+            /* box-sizing: border-box; ALREADY ADDED TO * SELECTOR, but no harm keeping it explicit if preferred */
         }
 
         .chat-container {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
+            flex-grow: 1; /* Grow to fill body */
+            /* height: 100%; If body has correct height, this should work */
             background-color: var(--chat-panel-bg);
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
+            overflow: hidden; /* Important: clips children */
             border: 2px solid var(--chat-accent-color);
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
@@ -124,25 +130,29 @@
             font-size: 1.1em;
             text-align: center;
             background-color: var(--chat-accent-color);
-            color: var(--chat-send-button-text); /* Correctly using this var */
+            color: var(--chat-send-button-text);
             border-bottom: 2px solid color-mix(in srgb, var(--chat-accent-color) 80%, black 20%);
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
-        body.theme-neon .chat-header { /* Neon specific font */
+        body.theme-neon .chat-header {
             font-family: var(--font-neon-headings);
             letter-spacing: 1px;
             font-size: 1.15em;
             padding: 12px 15px;
         }
-        body.theme-pink .chat-header { /* Pink theme can also use Nunito, just ensure correct color */
+        body.theme-pink .chat-header {
             font-family: 'Nunito', sans-serif;
-            font-weight: 700; /* Keep it bold */
+            font-weight: 700;
         }
 
-
         .chat-messages {
-            flex-grow: 1; padding: 15px; overflow-y: auto;
-            display: flex; flex-direction: column;
+            flex-grow: 1; 
+            padding: 15px; 
+            overflow-y: auto;
+            display: flex; 
+            flex-direction: column;
+            min-height: 0; /* VERY IMPORTANT for scrollable flex children in Chrome */
         }
 
         .message {
@@ -154,15 +164,11 @@
         .message .username {
             font-weight: 700; display: block; font-size: 0.85em;
             margin-bottom: 3px; opacity: 0.8;
-            color: var(--chat-accent-color); /* Username colored by accent */
+            color: var(--chat-accent-color);
         }
-        body.theme-pink .message.sent-by-other .username { /* Override for pink if needed, usually fine */
-            /* color: var(--chat-accent-color); */
-        }
-         body.theme-pink .message.sent-by-me .username {
+        body.theme-pink .message.sent-by-me .username {
             color: color-mix(in srgb, var(--chat-accent-color) 80%, var(--chat-bg) 20%);
         }
-
 
         .message .timestamp { font-size: 0.75em; opacity: 0.6; margin-left: 8px; }
 
@@ -177,15 +183,16 @@
             border-bottom-right-radius: 5px;
         }
         body.theme-neon.mode-dark .message.sent-by-me {
-            color: #d0d8e0; /* Specific text color for own messages on neon dark for better contrast */
+            color: #d0d8e0;
         }
 
-
         .chat-input-area {
-            display: flex; padding: 10px 15px;
+            display: flex; 
+            padding: 10px 15px;
             border-top: 1px solid var(--chat-input-border);
-            background-color: var(--chat-panel-bg); /* Use panel for consistency */
+            background-color: var(--chat-panel-bg);
             transition: border-color 0.3s ease, background-color 0.3s ease;
+            flex-shrink: 0; /* Prevent input area from shrinking */
         }
 
         #usernameInput, #messageInput {
@@ -233,7 +240,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // YOUR ACTUAL FIREBASE CONFIGURATION (from your previous input)
+        // YOUR ACTUAL FIREBASE CONFIGURATION
         const firebaseConfig = {
           apiKey: "AIzaSyBSXt-0jZITihBd1MW3clSepEh4ukEzB7g",
           authDomain: "oc-world-chat-7e9c8.firebaseapp.com",
@@ -242,7 +249,6 @@
           storageBucket: "oc-world-chat-7e9c8.firebasestorage.app",
           messagingSenderId: "639212655016",
           appId: "1:639212655016:web:cfddaa4c2e0c7471b2cd9d"
-          // measurementId can be added if you used Analytics
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -254,27 +260,41 @@
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const chatBody = document.body;
-        const chatHeader = document.querySelector('.chat-header');
+        const chatHeaderEl = document.querySelector('.chat-header'); // Renamed to avoid conflict
 
+        // Function to set the actual viewport height as a CSS variable
+        function setRealViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
 
         // Function to apply theme from URL parameters
         function applyChatTheme() {
             const urlParams = new URLSearchParams(window.location.search);
-            const theme = urlParams.get('theme') || 'neon'; // Default to neon
-            const mode = urlParams.get('mode') || 'dark';   // Default to dark
+            const theme = urlParams.get('theme') || 'neon';
+            const mode = urlParams.get('mode') || 'dark';
 
-            chatBody.className = ''; // Clear existing classes
+            chatBody.className = '';
             chatBody.classList.add(`theme-${theme}`);
             chatBody.classList.add(`mode-${mode}`);
 
-            // Update chat header text based on theme (optional visual cue)
-            if (theme === 'pink') {
-                chatHeader.textContent = "OC World Live Chat 💖";
-            } else {
-                chatHeader.textContent = "OC World Live Chat [N]";
+            if (chatHeaderEl) { // Check if element exists
+                 // Update chat header text based on theme (optional visual cue)
+                if (theme === 'pink') {
+                    chatHeaderEl.textContent = "OC World Live Chat 💖";
+                } else {
+                    chatHeaderEl.textContent = "OC World Live Chat [N]";
+                }
             }
         }
-        applyChatTheme(); // Apply theme as soon as the page loads
+        
+        // Set viewport height and apply theme on load
+        window.addEventListener('load', () => {
+            setRealViewportHeight();
+            applyChatTheme();
+        });
+        window.addEventListener('resize', setRealViewportHeight);
+        window.addEventListener('orientationchange', setRealViewportHeight);
 
 
         if (localStorage.getItem('chatUsername')) {
@@ -282,27 +302,31 @@
         }
 
         function displayMessage(username, text, timestamp, isMe = false) {
-            // ... (displayMessage function is identical to previous version)
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message');
             messageDiv.classList.toggle('sent-by-me', isMe);
             messageDiv.classList.toggle('sent-by-other', !isMe);
+            
             const userSpan = document.createElement('span');
             userSpan.classList.add('username');
             userSpan.textContent = username || "Anonymous";
+            
             const timeSpan = document.createElement('span');
             timeSpan.classList.add('timestamp');
             timeSpan.textContent = new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            userSpan.appendChild(timeSpan);
-            const textNode = document.createTextNode(text);
+            
+            userSpan.appendChild(timeSpan); // Append timestamp to username span
+            
+            const textNode = document.createTextNode(text); // Create text node for the message content
+            
             messageDiv.appendChild(userSpan);
-            messageDiv.appendChild(textNode);
+            messageDiv.appendChild(textNode); // Append message text after username block
+            
             chatMessagesDiv.appendChild(messageDiv);
             chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
         }
 
         function sendMessage() {
-            // ... (sendMessage function is identical to previous version)
             const username = usernameInput.value.trim() || "Anonymous ✨";
             const text = messageInput.value.trim();
             if (text === '') return;
@@ -320,27 +344,34 @@
         });
 
         messagesRef.limitToLast(50).on('child_added', function(snapshot) {
-            // ... (messages listener is identical to previous version, 'isMe' logic included)
             const message = snapshot.val();
             const currentUsername = usernameInput.value.trim() || "Anonymous ✨";
-            let isMe = (currentUsername === message.username && currentUsername !== "Anonymous ✨");
-            // Rudimentary check for "own" anonymous message. This is not perfectly reliable.
-            // A session-based temporary ID would be better.
+            let isMe = (message.username !== "Anonymous ✨" && currentUsername === message.username);
+             // A very basic attempt to identify "own" anonymous messages.
+            // This isn't perfect and relies on the fact that an anonymous message is sent
+            // by the current user if their input field is also "Anonymous ✨".
+            // A more robust solution would involve session IDs or temporary user IDs.
             if (message.username === "Anonymous ✨" && currentUsername === "Anonymous ✨") {
-                // Could check a recently sent flag with a very short timeout if needed
-                // but for now, all "Anonymous ✨" will look like "other" if multiple are chatting
-                // This logic needs more sophistication for perfect "isMe" for anonymous users
+                // Heuristic: if the last sent message from this client was anonymous, assume this is it.
+                // This is still imperfect if multiple anonymous users send messages rapidly.
+                // For now, we'll tentatively mark it as 'me' if the input name is also Anonymous.
+                // A proper fix would need a temporary ID stored with the message or session.
+                // For simplicity in this example, let's just use the current username check.
+                // If both are "Anonymous ✨", it will be marked as 'other' by default with the current logic.
+                // To make it 'me', we would need a flag or more complex check.
+                // Let's stick to the simpler logic where only named users are reliably 'me'.
             }
             displayMessage(message.username, message.text, message.timestamp, isMe);
         });
 
         const connectedRef = database.ref(".info/connected");
         connectedRef.on("value", (snap) => {
-          // Update header slightly differently for clarity if using specific titles per theme
-          const baseTitle = "OC World Live Chat";
-          const themeIndicator = chatBody.classList.contains('theme-pink') ? "💖" : "[N]";
-          const status = snap.val() === true ? "(Connected)" : "(Connecting...)";
-          if (chatHeader) chatHeader.textContent = `${baseTitle} ${themeIndicator} ${status}`;
+          if (chatHeaderEl) { // Check if element exists
+            const baseTitle = "OC World Live Chat";
+            const themeIndicator = chatBody.classList.contains('theme-pink') ? "💖" : "[N]";
+            const status = snap.val() === true ? "(Connected)" : "(Connecting...)";
+            chatHeaderEl.textContent = `${baseTitle} ${themeIndicator} ${status}`;
+          }
         });
     </script>
 </body>
