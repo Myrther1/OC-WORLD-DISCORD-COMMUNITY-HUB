@@ -212,18 +212,25 @@
         }
         body.theme-pink .main-container { gap: 25px; }
 
-        .sidebar, .content-area {
-            background-color: var(--secondary-bg-color);
-            padding: 25px; border-radius: 8px; border: 1px solid var(--border-color);
+        .sidebar {
+            flex: 0 0 320px; align-self: flex-start;
+            background-color: var(--secondary-bg-color); padding: 25px;
+            border-radius: 8px; border: 1px solid var(--border-color);
             box-shadow: 0 0 10px var(--glow-color);
             transition: all var(--transition-speed) ease;
         }
+        .content-area {
+            flex-grow: 1;
+            background-color: var(--secondary-bg-color); padding: 25px;
+            border-radius: 8px; border: 1px solid var(--border-color);
+            box-shadow: 0 0 10px var(--glow-color);
+            transition: all var(--transition-speed) ease;
+        }
+
         body.theme-neon .sidebar, body.theme-neon .content-area {
              background-color: color-mix(in srgb, var(--secondary-bg-color) 85%, transparent);
         }
-        .sidebar { flex: 0 0 280px; max-height: calc(100vh - 300px); overflow-y: auto; }
-        .content-area { flex-grow: 1; }
-
+        
         body.theme-pink .sidebar, body.theme-pink .content-area {
             border-radius: 20px; border-width: 2px; padding: 30px;
             border-color: color-mix(in srgb, var(--accent-color) 25%, white 75%);
@@ -231,7 +238,7 @@
         }
 
         .sidebar h2, .content-section .content-section-title {
-            font-family: var(--header-font); margin-bottom: 15px; text-align: center;
+            font-family: var(--header-font); margin-bottom: 25px; text-align: center;
             border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
             transition: all var(--transition-speed) ease;
         }
@@ -241,7 +248,7 @@
         
         body.theme-pink .sidebar h2,
         body.theme-pink .content-section .content-section-title {
-            font-size: 2.2em; padding-bottom: 15px; margin-bottom: 25px;
+            font-size: 2.2em; padding-bottom: 15px;
             text-shadow: 1px 1px 0px color-mix(in srgb, var(--primary-bg-color) 40%, transparent), 0 0 5px var(--glow-color);
             border-bottom-width: 2px;
             border-image: linear-gradient(to right, transparent 0%, var(--accent-color) 30%, color-mix(in srgb, var(--accent-color) 50%, white 50%) 50%, var(--accent-color) 70%, transparent 100%) 1;
@@ -258,19 +265,57 @@
             color: var(--heading-color-mint);
             border-image-source: linear-gradient(to right, transparent 0%, var(--heading-color-mint) 30%, color-mix(in srgb, var(--heading-color-mint) 50%, white 50%) 50%, var(--heading-color-mint) 70%, transparent 100%);
         }
+        
+        /* --- Styles for NEW Collapsible List --- */
+        #user-list-container { display: block; }
+        .user-category-title {
+            font-size: 0.9em; font-weight: 700;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--text-color) 90%, black 10%);
+            margin-top: 20px; margin-bottom: 10px;
+            cursor: pointer; user-select: none;
+            position: relative; padding-left: 20px;
+            transition: color 0.2s ease;
+        }
+        body.theme-pink .user-category-title {
+            font-size: 1em;
+            color: var(--text-color);
+            text-shadow: 1px 1px 0px color-mix(in srgb, var(--primary-bg-color) 40%, transparent);
+        }
+        .user-category-title:hover { color: var(--accent-color); }
+        .sidebar #user-list-container > .user-category-title:first-of-type { margin-top: -10px; }
+        .user-category-title::before {
+            content: '▶';
+            position: absolute; left: 0; top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            font-size: 0.8em;
+        }
+        .user-category-title.active::before { transform: translateY(-50%) rotate(90deg); }
+        .role-member-list {
+            display: flex; flex-direction: column; gap: 12px;
+            padding-left: 5px;
+            display: none; /* Collapsed by default */
+        }
+        .role-member-list.active { display: flex; /* Expanded */ }
 
-        .user-list { display: flex; flex-direction: column; gap: 15px; }
-        body.theme-pink .user-list { gap: 12px; }
         .user-item {
-            display: flex; align-items: center; gap: 10px; padding: 8px;
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 15px; /* Harmonized for both themes */
             background-color: color-mix(in srgb, var(--primary-bg-color) 70%, var(--secondary-bg-color) 30%);
-            border-radius: 5px; border-left: 3px solid var(--accent-color);
+            border-radius: 15px;
+            border: 2px solid var(--border-color);
             transition: all 0.2s ease-in-out;
         }
+        body.theme-neon .user-item {
+             border-radius: 5px;
+             border-left: 3px solid var(--accent-color);
+             border-top: 1px solid var(--border-color);
+             border-right: 1px solid var(--border-color);
+             border-bottom: 1px solid var(--border-color);
+        }
         body.theme-pink .user-item {
-            border-radius: 15px; padding: 10px 15px;
-            border: 2px solid var(--border-color); border-left-width: 2px;
-            box-shadow: 0 2px 5px var(--glow-color); gap: 12px;
+            box-shadow: 0 2px 5px var(--glow-color);
             background: linear-gradient(135deg, 
                 color-mix(in srgb, var(--secondary-bg-color) 90%, var(--primary-bg-color) 10%), 
                 color-mix(in srgb, var(--secondary-bg-color) 60%, var(--primary-bg-color) 40%)
@@ -291,16 +336,8 @@
             box-shadow: 0 0 6px var(--accent-color), inset 0 0 3px rgba(255,255,255,0.3);
             padding: 2px; background-clip: content-box; border-color: white;
         }
-        .username { font-size: 1em; font-weight: bold; color: var(--text-color); transition: color var(--transition-speed) ease; }
+        .username { font-weight: 600; font-size: 1em; color: var(--text-color); }
         body.theme-pink .username { font-weight: 700; font-size: 1.1em; }
-
-        .more-users-note { text-align: center; font-style: italic; color: var(--accent-color); margin-top: 15px; transition: all var(--transition-speed) ease;}
-        body.theme-pink .more-users-note {
-            font-weight: 600; padding: 8px 12px;
-            background-color: color-mix(in srgb, var(--secondary-bg-color) 30%, var(--primary-bg-color) 70%);
-            border-radius: 10px; text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-            color: var(--text-color);
-        }
 
         .content-section p { margin-bottom: 15px; color: var(--text-color); transition: color var(--transition-speed) ease; }
         body.theme-pink .content-section p { font-size: 1.1em; line-height: 1.75; }
@@ -404,7 +441,7 @@
             .header-main-content { align-items: center; }
             .header-main-content .design-note { margin-left: 0; text-align: center; }
             .main-container { flex-direction: column; }
-            .sidebar { flex: 1 1 auto; max-height: 350px; margin-bottom: 20px; }
+            .sidebar { flex: 1 1 auto; max-height: none; align-self:stretch; margin-bottom: 20px; }
             body.theme-neon .site-header h1 { font-size: 1.8em; }
             body.theme-pink .site-header h1 { font-size: 2.2em; gap: 0.1em; }
             body.theme-pink .marquee-container { margin-left:10px; margin-right:10px;}
@@ -491,25 +528,9 @@
 
     <div class="main-container">
         <aside class="sidebar">
-            <h2 class="content-section-title">Users</h2>
-            <div class="user-list">
-                <div class="user-item">
-                    <img src="assets/William.png" alt="William PFP" class="user-pfp">
-                    <span class="username">William</span>
-                </div>
-                <div class="user-item">
-                    <img src="assets/Rose.png" alt="Rose PFP" class="user-pfp">
-                    <span class="username">Rose</span>
-                </div>
-                <div class="user-item">
-                    <img src="assets/Molly.png" alt="Molly PFP" class="user-pfp">
-                    <span class="username">Molly</span>
-                </div>
-                <div class="user-item">
-                    <img src="assets/Sky.png" alt="Sky PFP" class="user-pfp">
-                    <span class="username">Sky</span>
-                </div>
-                <p class="more-users-note">...and many more talented members!</p>
+            <h2 class="content-section-title">Members</h2>
+            <div id="user-list-container">
+                <p>Connecting to the Hub's database...</p>
             </div>
         </aside>
 
@@ -554,12 +575,140 @@
     </div>
 
     <footer class="site-footer-bottom">
-        <p>&copy; 2025 William Du Plessis (OC World Community Member). All rights reserved.</p>
+        <p>© 2025 William Du Plessis (OC World Community Member). All rights reserved.</p>
     </footer>
 
+    <!-- ADDED: Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <!-- particles.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- START: NEW SIDEBAR SCRIPT ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBALj_xmS1OkTpH72oUzavFcyMyxm9MUrw",
+            authDomain: "oc-world-hub-auto-users-add.firebaseapp.com",
+            databaseURL: "https://oc-world-hub-auto-users-add-default-rtdb.firebaseio.com",
+            projectId: "oc-world-hub-auto-users-add",
+            storageBucket: "oc-world-hub-auto-users-add.firebasestorage.app",
+            messagingSenderId: "507194352454",
+            appId: "1:507194352454:web:24b2365cf356b237103b47",
+            measurementId: "G-Q2NWRTPE6Y"
+        };
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+            const usersRef = database.ref('users');
+
+            const userListContainer = document.getElementById('user-list-container');
+            
+            function renderUserList(users) {
+                if (!userListContainer) return;
+                userListContainer.innerHTML = ''; 
+
+                if (!users) {
+                    userListContainer.innerHTML = '<p>Could not load members from the Hub.</p>';
+                    return;
+                }
+
+                const categoryRoles = [
+                    'Community Hub Website creator', 'Retired Staff', 'Member', 
+                    '18+', '18-', 'Asia', 'America', 'Africa', 'Europe', 'Australia', 'No Roles'
+                ];
+
+                const allUsersArray = Object.values(users);
+                
+                categoryRoles.forEach((roleName, index) => {
+                    let membersInCategory = [];
+
+                    if (roleName === 'No Roles') {
+                        membersInCategory = allUsersArray.filter(user => !user.roles || user.roles.length === 0);
+                    } else {
+                        membersInCategory = allUsersArray.filter(user => user.roles && user.roles.includes(roleName));
+                    }
+
+                    if (membersInCategory.length > 0) {
+                        createCategory(roleName, membersInCategory, index === 0);
+                    }
+                });
+            }
+
+            function createCategory(roleName, members, isFirstCategory) {
+                members.sort((a, b) => a.username.localeCompare(b.username));
+
+                const categoryTitle = document.createElement('h3');
+                categoryTitle.className = 'user-category-title';
+                categoryTitle.textContent = `${roleName} (${members.length})`;
+                userListContainer.appendChild(categoryTitle);
+
+                const memberListDiv = document.createElement('div');
+                memberListDiv.className = 'role-member-list';
+                userListContainer.appendChild(memberListDiv);
+                
+                members.forEach(user => {
+                    const userItem = document.createElement('div');
+                    userItem.className = 'user-item';
+
+                    const userPfp = document.createElement('img');
+                    userPfp.src = user.avatarURL;
+                    userPfp.alt = `${user.username}'s PFP`;
+                    userPfp.className = 'user-pfp';
+                    // Fallback in case the avatarURL is broken or missing
+                    userPfp.onerror = function() { this.src = 'assets/server-logo-placeholder.png'; }; 
+
+                    const username = document.createElement('span');
+                    username.className = 'username';
+                    username.textContent = user.username;
+
+                    userItem.appendChild(userPfp);
+                    userItem.appendChild(username);
+                    memberListDiv.appendChild(userItem);
+                });
+                
+                // Auto-expand the first category that has members
+                if (isFirstCategory) {
+                    categoryTitle.classList.add('active');
+                    memberListDiv.classList.add('active');
+                }
+            }
+            
+            if(userListContainer) {
+                userListContainer.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('user-category-title')) {
+                        const title = event.target;
+                        const memberList = title.nextElementSibling;
+                        
+                        title.classList.toggle('active');
+                        if (memberList && memberList.classList.contains('role-member-list')) {
+                            memberList.classList.toggle('active');
+                        }
+                    }
+                });
+
+                usersRef.on('value', (snapshot) => {
+                    const users = snapshot.val();
+                    renderUserList(users);
+                }, (error) => {
+                    userListContainer.innerHTML = '<p>Error connecting to the Hub database. Members could not be loaded.</p>';
+                    console.error("Firebase read failed: " + error.code);
+                });
+            }
+        } catch (e) {
+            console.error("Error initializing Firebase or sidebar script:", e);
+            const userListContainer = document.getElementById('user-list-container');
+            if (userListContainer) {
+                 userListContainer.innerHTML = '<p>A critical script error occurred. Sidebar cannot be loaded.</p>';
+            }
+        }
+        // --- END: NEW SIDEBAR SCRIPT ---
+
+
+        // --- START: THEME AND PARTICLES SCRIPT (Existing) ---
         const body = document.body;
         const modeToggleButton = document.getElementById('modeToggle');
         const themeNeonButton = document.getElementById('themeNeon');
@@ -572,34 +721,14 @@
 
         const openChatButton = document.getElementById('openChatWindow');
 
-        const defaultModesForThemes = {
-            neon: 'dark',
-            pink: 'light'
-        };
+        const defaultModesForThemes = { neon: 'dark', pink: 'light' };
 
         let currentTheme = localStorage.getItem('oc_theme') || 'neon';
-        let currentMode = localStorage.getItem(`oc_mode_${currentTheme}`);
-        if (!currentMode) {
-            currentMode = defaultModesForThemes[currentTheme];
-        }
+        let currentMode = localStorage.getItem(`oc_mode_${currentTheme}`) || defaultModesForThemes[currentTheme];
 
         const sakuraPetalSVG = "data:image/svg+xml;base64," + btoa('<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25 0C16.6206 6.47211 10.4748 13.5593 5.50111 20.6466C-1.97222 31.3077 -0.0179847 45.1606 10.1307 50C20.343 46.2128 25.7126 37.3845 29.1296 29.0589C32.5466 20.7334 33.9033 12.0615 33.9033 0H25Z" fill="#CURRENT_COLOR"/></svg>');
-        const neonParticlesConfig = {
-            "particles": {"number": {"value": 70,"density": {"enable": true,"value_area": 800}},"color": {"value": "var(--particle-color)"},"shape": {"type": "circle"},"opacity": {"value": 0.5,"random": true,"anim": {"enable": true,"speed": 1,"opacity_min": 0.1,"sync": false}},"size": {"value": 2.5,"random": true},"line_linked": {"enable": true,"distance": 160,"color": "var(--particle-line-color)","opacity": 0.3,"width": 1},"move": {"enable": true,"speed": 1.5,"direction": "none","random": true,"straight": false,"out_mode": "out"}},
-            "interactivity": {"detect_on": "canvas","events": {"onhover": {"enable": true,"mode": "grab"},"onclick": {"enable": true,"mode": "push"}},"modes": {"grab": {"distance": 150,"line_linked": {"opacity": 0.8}},"push": {"particles_nb": 3}}},
-            "retina_detect": true
-        };
-        const pinkThemeParticlesConfig = {
-            "particles": {
-                "number": {"value": 25, "density": {"enable": true, "value_area": 900}}, "color": {"value": "var(--particle-color)"}, 
-                "shape": {"type": ["image", "circle"], "image": { "src": "", "width": 100, "height": 100 }, "stroke": {"width":0, "color": "#000000"}},
-                "opacity": {"value": 0.7, "random": true, "anim": {"enable": true, "speed": 0.4, "opacity_min": 0.2, "sync": false}},
-                "size": { "value": 28, "random": true, "anim": {"enable": true, "speed": 3, "size_min": 8, "sync": false}},
-                "line_linked": {"enable": false},
-                "move": {"enable": true, "speed": 1.2, "direction": "bottom-right", "random": true, "straight": false, "out_mode": "out", "bounce": false, "attract": {"enable": true, "rotateX": 200, "rotateY": 1000}}},
-             "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "bubble"}, "onclick": {"enable": false}}, "modes": {"bubble": {"distance": 80, "size": 35, "duration": 1.5, "opacity": 0.8, "speed": 1.5}}},
-            "retina_detect": true
-        };
+        const neonParticlesConfig = { "particles": {"number": {"value": 70,"density": {"enable": true,"value_area": 800}},"color": {"value": "var(--particle-color)"},"shape": {"type": "circle"},"opacity": {"value": 0.5,"random": true,"anim": {"enable": true,"speed": 1,"opacity_min": 0.1,"sync": false}},"size": {"value": 2.5,"random": true},"line_linked": {"enable": true,"distance": 160,"color": "var(--particle-line-color)","opacity": 0.3,"width": 1},"move": {"enable": true,"speed": 1.5,"direction": "none","random": true,"straight": false,"out_mode": "out"}}, "interactivity": {"detect_on": "canvas","events": {"onhover": {"enable": true,"mode": "grab"},"onclick": {"enable": true,"mode": "push"}},"modes": {"grab": {"distance": 150,"line_linked": {"opacity": 0.8}},"push": {"particles_nb": 3}}}, "retina_detect": true };
+        const pinkThemeParticlesConfig = { "particles": { "number": {"value": 25, "density": {"enable": true, "value_area": 900}}, "color": {"value": "var(--particle-color)"}, "shape": {"type": ["image", "circle"], "image": { "src": "", "width": 100, "height": 100 }, "stroke": {"width":0, "color": "#000000"}}, "opacity": {"value": 0.7, "random": true, "anim": {"enable": true, "speed": 0.4, "opacity_min": 0.2, "sync": false}}, "size": { "value": 28, "random": true, "anim": {"enable": true, "speed": 3, "size_min": 8, "sync": false}}, "line_linked": {"enable": false}, "move": {"enable": true, "speed": 1.2, "direction": "bottom-right", "random": true, "straight": false, "out_mode": "out", "bounce": false, "attract": {"enable": true, "rotateX": 200, "rotateY": 1000}}}, "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "bubble"}, "onclick": {"enable": false}}, "modes": {"bubble": {"distance": 80, "size": 35, "duration": 1.5, "opacity": 0.8, "speed": 1.5}}}, "retina_detect": true };
 
         function updateShowcaseTextVisibility() {
             if (currentTheme === 'pink') {
@@ -650,7 +779,6 @@
 
         modeToggleButton.addEventListener('click', () => {
             currentMode = currentMode === 'dark' ? 'light' : 'dark';
-            localStorage.setItem(`oc_mode_${currentTheme}`, currentMode);
             applyThemeAndMode();
         });
 
@@ -684,7 +812,8 @@
         }
 
         applyThemeAndMode();
-        console.log("OC World Hub with Defaults, PFPs, Chat Link, and Text Updates Initialized!");
+        console.log("OC World Hub Initialized!");
+        // --- END: THEME AND PARTICLES SCRIPT ---
     });
     </script>
 </body>
