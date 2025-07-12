@@ -212,18 +212,25 @@
         }
         body.theme-pink .main-container { gap: 25px; }
 
-        .sidebar, .content-area {
-            background-color: var(--secondary-bg-color);
-            padding: 25px; border-radius: 8px; border: 1px solid var(--border-color);
+        .sidebar {
+            flex: 0 0 320px; align-self: flex-start;
+            background-color: var(--secondary-bg-color); padding: 25px;
+            border-radius: 8px; border: 1px solid var(--border-color);
             box-shadow: 0 0 10px var(--glow-color);
             transition: all var(--transition-speed) ease;
         }
+        .content-area {
+            flex-grow: 1;
+            background-color: var(--secondary-bg-color); padding: 25px;
+            border-radius: 8px; border: 1px solid var(--border-color);
+            box-shadow: 0 0 10px var(--glow-color);
+            transition: all var(--transition-speed) ease;
+        }
+
         body.theme-neon .sidebar, body.theme-neon .content-area {
              background-color: color-mix(in srgb, var(--secondary-bg-color) 85%, transparent);
         }
-        .sidebar { flex: 0 0 280px; max-height: calc(100vh - 300px); overflow-y: auto; }
-        .content-area { flex-grow: 1; }
-
+        
         body.theme-pink .sidebar, body.theme-pink .content-area {
             border-radius: 20px; border-width: 2px; padding: 30px;
             border-color: color-mix(in srgb, var(--accent-color) 25%, white 75%);
@@ -231,7 +238,7 @@
         }
 
         .sidebar h2, .content-section .content-section-title {
-            font-family: var(--header-font); margin-bottom: 15px; text-align: center;
+            font-family: var(--header-font); margin-bottom: 25px; text-align: center;
             border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
             transition: all var(--transition-speed) ease;
         }
@@ -241,7 +248,7 @@
         
         body.theme-pink .sidebar h2,
         body.theme-pink .content-section .content-section-title {
-            font-size: 2.2em; padding-bottom: 15px; margin-bottom: 25px;
+            font-size: 2.2em; padding-bottom: 15px;
             text-shadow: 1px 1px 0px color-mix(in srgb, var(--primary-bg-color) 40%, transparent), 0 0 5px var(--glow-color);
             border-bottom-width: 2px;
             border-image: linear-gradient(to right, transparent 0%, var(--accent-color) 30%, color-mix(in srgb, var(--accent-color) 50%, white 50%) 50%, var(--accent-color) 70%, transparent 100%) 1;
@@ -254,147 +261,67 @@
             color: var(--heading-color-peach);
             border-image-source: linear-gradient(to right, transparent 0%, var(--heading-color-peach) 30%, color-mix(in srgb, var(--heading-color-peach) 50%, white 50%) 50%, var(--heading-color-peach) 70%, transparent 100%);
         }
-        body.theme-pink #oc-showcase .content-section-title { 
-            color: var(--heading-color-mint);
-            border-image-source: linear-gradient(to right, transparent 0%, var(--heading-color-mint) 30%, color-mix(in srgb, var(--heading-color-mint) 50%, white 50%) 50%, var(--heading-color-mint) 70%, transparent 100%);
+        
+        #user-list-container { display: block; }
+        .user-category-title {
+            font-size: 0.9em; font-weight: 700;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--text-color) 90%, black 10%);
+            margin-top: 20px; margin-bottom: 10px;
+            cursor: pointer; user-select: none;
+            position: relative; padding-left: 20px;
+            transition: color 0.2s ease;
         }
+        body.theme-pink .user-category-title {
+            font-size: 1em;
+            color: var(--text-color);
+            text-shadow: 1px 1px 0px color-mix(in srgb, var(--primary-bg-color) 40%, transparent);
+        }
+        .user-category-title:hover { color: var(--accent-color); }
+        .sidebar #user-list-container > .user-category-title:first-of-type { margin-top: -10px; }
+        .user-category-title::before {
+            content: '▶';
+            position: absolute; left: 0; top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            font-size: 0.8em;
+        }
+        .user-category-title.active::before { transform: translateY(-50%) rotate(90deg); }
+        .role-member-list {
+            display: none; flex-direction: column; gap: 12px;
+            padding-left: 5px;
+        }
+        .role-member-list.active { display: flex; }
 
-        .user-list { display: flex; flex-direction: column; gap: 15px; }
-        body.theme-pink .user-list { gap: 12px; }
         .user-item {
-            display: flex; align-items: center; gap: 10px; padding: 8px;
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 15px;
             background-color: color-mix(in srgb, var(--primary-bg-color) 70%, var(--secondary-bg-color) 30%);
-            border-radius: 5px; border-left: 3px solid var(--accent-color);
+            border-radius: 15px;
+            border: 2px solid var(--border-color);
             transition: all 0.2s ease-in-out;
         }
+        body.theme-neon .user-item {
+             border-radius: 5px;
+             border-left: 3px solid var(--accent-color);
+             border-top: 1px solid var(--border-color);
+             border-right: 1px solid var(--border-color);
+             border-bottom: 1px solid var(--border-color);
+        }
         body.theme-pink .user-item {
-            border-radius: 15px; padding: 10px 15px;
-            border: 2px solid var(--border-color); border-left-width: 2px;
-            box-shadow: 0 2px 5px var(--glow-color); gap: 12px;
+            box-shadow: 0 2px 5px var(--glow-color);
             background: linear-gradient(135deg, 
                 color-mix(in srgb, var(--secondary-bg-color) 90%, var(--primary-bg-color) 10%), 
                 color-mix(in srgb, var(--secondary-bg-color) 60%, var(--primary-bg-color) 40%)
             );
         }
-        body.theme-pink .user-item:hover {
-            transform: translateY(-3px) rotate(-1deg);
-            box-shadow: 0 5px 10px var(--accent-color); border-color: var(--accent-color);
-        }
         .user-pfp {
             width: 40px; height: 40px; border-radius: 50%;
             border: 2px solid var(--accent-color); object-fit: cover;
-            background-color: var(--secondary-bg-color);
-            transition: all var(--transition-speed) ease;
         }
-        body.theme-pink .user-pfp {
-            width: 48px; height: 48px; border-width: 3px;
-            box-shadow: 0 0 6px var(--accent-color), inset 0 0 3px rgba(255,255,255,0.3);
-            padding: 2px; background-clip: content-box; border-color: white;
-        }
-        .username { font-size: 1em; font-weight: bold; color: var(--text-color); transition: color var(--transition-speed) ease; }
-        body.theme-pink .username { font-weight: 700; font-size: 1.1em; }
-
-        .more-users-note { text-align: center; font-style: italic; color: var(--accent-color); margin-top: 15px; transition: all var(--transition-speed) ease;}
-        body.theme-pink .more-users-note {
-            font-weight: 600; padding: 8px 12px;
-            background-color: color-mix(in srgb, var(--secondary-bg-color) 30%, var(--primary-bg-color) 70%);
-            border-radius: 10px; text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-            color: var(--text-color);
-        }
-
-        .content-section p { margin-bottom: 15px; color: var(--text-color); transition: color var(--transition-speed) ease; }
-        body.theme-pink .content-section p { font-size: 1.1em; line-height: 1.75; }
-
-        .showcase-description em {
-            color: var(--accent-color); display: block; text-align: center;
-            margin-bottom: 20px; font-size: 1.1em; transition: all var(--transition-speed) ease;
-        }
-        body.theme-pink .showcase-description em {
-            font-weight: 700; padding: 12px 15px; border-radius: 12px;
-            background: color-mix(in srgb, var(--accent-color) 10%, var(--secondary-bg-color) 90%);
-            color: var(--text-color);
-            text-shadow: 1px 1px 1px color-mix(in srgb, var(--primary-bg-color) 30%, transparent);
-            box-shadow: 0 2px 4px var(--glow-color);
-        }
-
-        .scroll-chart-placeholder {
-            border: 2px dashed var(--accent-color); border-radius: 8px; padding: 20px; min-height: 300px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-            background: repeating-linear-gradient( 45deg,
-                color-mix(in srgb, var(--accent-color) 5%, transparent), color-mix(in srgb, var(--accent-color) 5%, transparent) 10px,
-                color-mix(in srgb, var(--accent-color) 2%, transparent) 10px, color-mix(in srgb, var(--accent-color) 2%, transparent) 20px );
-            transition: all var(--transition-speed) ease; position: relative;
-        }
-        body.theme-pink .scroll-chart-placeholder {
-            border-style: solid; border-width: 3px; border-color: var(--accent-color); border-radius: 25px;
-            min-height: 350px; padding: 40px 30px;
-            background-color: color-mix(in srgb, var(--secondary-bg-color) 70%, var(--primary-bg-color) 30%);
-            background-image: radial-gradient(var(--placeholder-bg-dots) 1px, transparent 1px);
-            background-size: 15px 15px;
-            box-shadow: inset 0 0 20px color-mix(in srgb, var(--glow-color) 50%, transparent), 0 0 10px var(--glow-color);
-            overflow: hidden;
-        }
-        body.theme-pink .scroll-chart-placeholder::before,
-        body.theme-pink .scroll-chart-placeholder::after {
-            content: '🎀'; position: absolute; font-size: 3em; color: var(--accent-color);
-            opacity: 0.7; text-shadow: 0 0 5px white;
-        }
-        body.theme-pink .scroll-chart-placeholder::before { top: 10px; left: 15px; transform: rotate(-25deg); }
-        body.theme-pink .scroll-chart-placeholder::after { bottom: 10px; right: 15px; transform: rotate(15deg) scaleX(-1); }
-
-        .placeholder-title {
-            font-family: var(--header-font); font-size: 1.5em; color: var(--heading-color-general-pink, var(--accent-color));
-            margin-bottom: 15px; text-shadow: 0 0 5px var(--accent-color);
-            transition: all var(--transition-speed) ease; z-index: 1; position: relative;
-        }
-        body.theme-pink .placeholder-title {
-            color: var(--accent-color); font-size: 2.5em;
-            text-shadow: 2px 2px 0px color-mix(in srgb, var(--primary-bg-color) 50%, white 20%), 0 0 10px white;
-            margin-bottom: 20px;
-        }
-
-        .placeholder-content p { font-size: 0.9em; color: color-mix(in srgb, var(--text-color) 80%, var(--primary-bg-color) 20%); transition: color var(--transition-speed) ease; z-index: 1; position: relative;}
-        body.theme-pink .placeholder-content p { font-size: 1.1em; color:var(--text-color); font-weight:600;}
-
-        .loading-bar-container { width: 80%; max-width: 300px; margin-top: 25px; z-index: 1; position: relative;}
-        .loading-bar-container span { display: block; font-size: 0.9em; color: var(--accent-color); margin-bottom: 8px; transition: color var(--transition-speed) ease; }
-        body.theme-pink .loading-bar-container span { font-weight: 700; color:var(--text-color); font-size:1em;}
-
-        .loading-bar {
-            width: 100%; height: 10px; background-color: var(--primary-bg-color);
-            border: 1px solid var(--accent-color); border-radius: 5px;
-            overflow: hidden; position: relative; transition: all var(--transition-speed) ease;
-        }
-        body.theme-pink .loading-bar {
-            height: 20px; border-radius: 20px; border-width: 3px;
-            border-color: white; background-color: color-mix(in srgb, var(--secondary-bg-color) 80%, white 20%);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 2px var(--accent-color);
-        }
-        .loading-bar::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 60%; height: 100%;
-            background-color: var(--accent-color); box-shadow: 0 0 5px var(--glow-color);
-            animation: loading-animation 2.5s infinite ease-in-out;
-            transition: all var(--transition-speed) ease;
-        }
-        body.theme-pink .loading-bar::after {
-            border-radius: 20px;
-            background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 70%, white 30%));
-            box-shadow: 0 0 8px var(--accent-color), inset 0 0 3px rgba(255,255,255,0.5);
-        }
-        @keyframes loading-animation { 0% { width: 0%; } 50% { width: 100%; } 100% { width: 0%; opacity: 0.8;} }
-
-        .site-footer-bottom {
-            text-align: center; padding: 20px; margin-top: 30px; border-top: 1px solid var(--border-color);
-            font-size: 0.9em; color: color-mix(in srgb, var(--text-color) 70%, var(--primary-bg-color) 30%);
-            position: relative; z-index: 5; transition: all var(--transition-speed) ease;
-        }
-        body.theme-pink .site-footer-bottom {
-            font-weight: 700; padding: 25px; border-top-width: 3px;
-            background-color: color-mix(in srgb, var(--secondary-bg-color) 60%, transparent);
-            border-top-left-radius: 25px; border-top-right-radius: 25px;
-            border-top-color: var(--accent-color); color: var(--text-color);
-            text-shadow: 1px 1px 0px color-mix(in srgb, var(--primary-bg-color) 20%, transparent);
-        }
+        .username { font-weight: 600; font-size: 1em; color: var(--text-color); }
+        
+        .content-section p { margin-bottom: 15px; }
 
         @media (max-width: 900px) {
             .header-controls-container {
@@ -404,53 +331,15 @@
             .header-main-content { align-items: center; }
             .header-main-content .design-note { margin-left: 0; text-align: center; }
             .main-container { flex-direction: column; }
-            .sidebar { flex: 1 1 auto; max-height: 350px; margin-bottom: 20px; }
-            body.theme-neon .site-header h1 { font-size: 1.8em; }
-            body.theme-pink .site-header h1 { font-size: 2.2em; gap: 0.1em; }
-            body.theme-pink .marquee-container { margin-left:10px; margin-right:10px;}
+            .sidebar { flex: 1 1 auto; max-height: none; align-self:stretch; margin-bottom: 20px; }
         }
-        @media (max-width: 600px) {
-            .logo-title-container { flex-direction: column; gap: 10px; text-align: center; }
-            body.theme-neon .site-header h1 { font-size: 1.6em; }
-            body.theme-pink .site-header h1 { font-size: 1.8em; gap: 0.05em;}
-            .header-main-content .design-note { font-size: 0.75em; }
-            .content-area, .sidebar { padding: 20px 15px; }
-            body.theme-neon .content-section .content-section-title, body.theme-neon .sidebar h2 { font-size: 1.6em; }
-            body.theme-pink .content-section .content-section-title, body.theme-pink .sidebar h2 { font-size: 1.9em; }
-            .header-controls-container { flex-wrap: wrap; justify-content: center; gap: 8px; }
-            .theme-controls button, .theme-controls .theme-label, .chat-icon-link { font-size: 0.85em; padding: 5px 10px; }
-            body.theme-pink .theme-controls button, body.theme-pink .chat-icon-link { padding: 7px 14px;}
-            body.theme-pink .scroll-chart-placeholder::before,
-            body.theme-pink .scroll-chart-placeholder::after { font-size: 2em; opacity: 0.5; }
-            body.theme-pink .placeholder-title {font-size: 2em;}
-        }
-
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--secondary-bg-color); transition: background-color var(--transition-speed) ease; }
-        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 5px; transition: background-color var(--transition-speed) ease; }
-        ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent-color) 80%, var(--heading-color, #fff) 20%); }
-        
-        body.theme-pink ::-webkit-scrollbar { width: 14px; }
-        body.theme-pink ::-webkit-scrollbar-track {
-            background: color-mix(in srgb, var(--primary-bg-color) 60%, var(--secondary-bg-color) 40%);
-            border-radius: 10px; border: 1px solid var(--border-color);
-        }
-        body.theme-pink ::-webkit-scrollbar-thumb {
-            background: linear-gradient(160deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 60%, white 40%));
-            border-radius: 10px;
-            border: 2px solid color-mix(in srgb, var(--primary-bg-color) 50%, white 20%);
-        }
-         body.theme-pink ::-webkit-scrollbar-thumb:hover {
-             background: linear-gradient(160deg, color-mix(in srgb, var(--accent-color) 100%, white 20%), var(--accent-color));
-             box-shadow: 0 0 5px white;
-         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
 
     <header class="site-header">
-        <div class="header-main-content">
+         <div class="header-main-content">
             <div class="logo-title-container">
                 <img src="assets/server-logo-placeholder.png" alt="Server Logo" class="server-logo">
                 <h1>
@@ -472,11 +361,7 @@
             </div>
             <div class="site-header-actions">
                 <a href="#" id="openChatWindow" class="chat-icon-link" title="Open Live Chat">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
-                        <path d="M0 0h24v24H0V0z" fill="none"/>
-                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
-                        <path d="M7 9h10v2H7zm0 3h7v2H7z"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/><path d="M7 9h10v2H7zm0 3h7v2H7z"/></svg>
                     <span>Chat</span>
                 </a>
             </div>
@@ -484,207 +369,178 @@
     </header>
 
     <div class="marquee-container">
-        <marquee behavior="scroll" direction="left" scrollamount="6">
-            Thanks for joining this wonderful community! +++ Welcome to the OC World Hub! +++ Discover amazing OCs and achievements! +++ Thanks for visiting this wonderful community!
-        </marquee>
+        <marquee>Welcome to the OC World Community Hub! Discover our talented members and their creations!</marquee>
     </div>
 
     <div class="main-container">
         <aside class="sidebar">
-            <h2 class="content-section-title">Users</h2>
-            <div class="user-list">
-                <div class="user-item">
-                    <img src="assets/William.png" alt="William PFP" class="user-pfp">
-                    <span class="username">William</span>
-                </div>
-                <div class="user-item">
-                    <img src="assets/Rose.png" alt="Rose PFP" class="user-pfp">
-                    <span class="username">Rose</span>
-                </div>
-                <div class="user-item">
-                    <img src="assets/Molly.png" alt="Molly PFP" class="user-pfp">
-                    <span class="username">Molly</span>
-                </div>
-                <div class="user-item">
-                    <img src="assets/Sky.png" alt="Sky PFP" class="user-pfp">
-                    <span class="username">Sky</span>
-                </div>
-                <p class="more-users-note">...and many more talented members!</p>
+            <h2>Members</h2>
+            <div id="user-list-container">
+                <p>Connecting to the Hub's database...</p>
             </div>
         </aside>
 
         <main class="content-area">
             <section id="about-server" class="content-section">
-                <h2 class="content-section-title">About OC World Discord Server</h2>
-                <p>
-                    Welcome to the OC World Discord Community Hub! This is the central place to discover
-                    the incredible original characters (OCs), stories, artwork, and achievements of our
-                    talented members. Our Discord server is a vibrant community for creators and enthusiasts
-                    alike, fostering collaboration, inspiration, and a shared passion for creativity.
-                </p>
-                <p>
-                    Explore the showcases, learn about our members, and get a glimpse into the fantastic
-                    worlds they build.
-                </p>
-            </section>
-
-            <section id="oc-showcase" class="content-section">
-                <h2 class="content-section-title">OC Showcase & Achievements</h2>
-                <p class="showcase-description">
-                    <em class="theme-pink-showcase-intro">(This special spot will soon blossom with our members' amazing creations!)</em>
-                    <em class="theme-neon-showcase-intro">(This section will feature a very detailed robotic and futuristic anime style scroll chart UI)</em>
-                </p>
-                <div class="scroll-chart-placeholder">
-                    <div class="placeholder-title">
-                         <span class="theme-pink-title">💖 Our Sparkling OCs - Almost Ready! ✨</span>
-                         <span class="theme-neon-title">Futuristic Scroll Chart UI - Coming Soon</span>
-                    </div>
-                    <div class="placeholder-content">
-                        <p>Imagine interactive panels, glowing data streams, character holograms, achievement badges...</p>
-                        <p>Each OC will have its dedicated space with art, lore, and stats.</p>
-                        <p>Achievements will be highlighted with dynamic visuals (But it will take time. Coding is not so easy).</p>
-                    </div>
-                    <div class="loading-bar-container">
-                        <div class="loading-bar"></div>
-                        <span>Initializing Showcase Matrix...</span>
-                    </div>
-                </div>
+                <h2>About OC World Discord Server</h2>
+                <p>Welcome to the OC World Discord Community Hub! This is the central place to discover the incredible original characters (OCs), stories, artwork, and achievements of our talented members. Our Discord server is a vibrant community for creators and enthusiasts alike, fostering collaboration, inspiration, and a shared passion for creativity.</p>
             </section>
         </main>
     </div>
+    
+    <footer class="site-footer-bottom"><p>© 2025 OC World Hub. All rights reserved.</p></footer>
 
-    <footer class="site-footer-bottom">
-        <p>&copy; 2025 William Du Plessis (OC World Community Member). All rights reserved.</p>
-    </footer>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
+    <!-- particles.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- THEME & PARTICLES SCRIPT ---
         const body = document.body;
         const modeToggleButton = document.getElementById('modeToggle');
         const themeNeonButton = document.getElementById('themeNeon');
         const themePinkButton = document.getElementById('themePink');
-
-        const pinkShowcaseIntro = document.querySelector('.theme-pink-showcase-intro');
-        const neonShowcaseIntro = document.querySelector('.theme-neon-showcase-intro');
-        const pinkPlaceholderTitle = document.querySelector('.theme-pink-title');
-        const neonPlaceholderTitle = document.querySelector('.theme-neon-title');
-
         const openChatButton = document.getElementById('openChatWindow');
 
-        const defaultModesForThemes = {
-            neon: 'dark',
-            pink: 'light'
-        };
-
+        const defaultModesForThemes = { neon: 'dark', pink: 'light' };
         let currentTheme = localStorage.getItem('oc_theme') || 'neon';
-        let currentMode = localStorage.getItem(`oc_mode_${currentTheme}`);
-        if (!currentMode) {
-            currentMode = defaultModesForThemes[currentTheme];
-        }
-
-        const sakuraPetalSVG = "data:image/svg+xml;base64," + btoa('<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25 0C16.6206 6.47211 10.4748 13.5593 5.50111 20.6466C-1.97222 31.3077 -0.0179847 45.1606 10.1307 50C20.343 46.2128 25.7126 37.3845 29.1296 29.0589C32.5466 20.7334 33.9033 12.0615 33.9033 0H25Z" fill="#CURRENT_COLOR"/></svg>');
-        const neonParticlesConfig = {
-            "particles": {"number": {"value": 70,"density": {"enable": true,"value_area": 800}},"color": {"value": "var(--particle-color)"},"shape": {"type": "circle"},"opacity": {"value": 0.5,"random": true,"anim": {"enable": true,"speed": 1,"opacity_min": 0.1,"sync": false}},"size": {"value": 2.5,"random": true},"line_linked": {"enable": true,"distance": 160,"color": "var(--particle-line-color)","opacity": 0.3,"width": 1},"move": {"enable": true,"speed": 1.5,"direction": "none","random": true,"straight": false,"out_mode": "out"}},
-            "interactivity": {"detect_on": "canvas","events": {"onhover": {"enable": true,"mode": "grab"},"onclick": {"enable": true,"mode": "push"}},"modes": {"grab": {"distance": 150,"line_linked": {"opacity": 0.8}},"push": {"particles_nb": 3}}},
-            "retina_detect": true
-        };
-        const pinkThemeParticlesConfig = {
-            "particles": {
-                "number": {"value": 25, "density": {"enable": true, "value_area": 900}}, "color": {"value": "var(--particle-color)"}, 
-                "shape": {"type": ["image", "circle"], "image": { "src": "", "width": 100, "height": 100 }, "stroke": {"width":0, "color": "#000000"}},
-                "opacity": {"value": 0.7, "random": true, "anim": {"enable": true, "speed": 0.4, "opacity_min": 0.2, "sync": false}},
-                "size": { "value": 28, "random": true, "anim": {"enable": true, "speed": 3, "size_min": 8, "sync": false}},
-                "line_linked": {"enable": false},
-                "move": {"enable": true, "speed": 1.2, "direction": "bottom-right", "random": true, "straight": false, "out_mode": "out", "bounce": false, "attract": {"enable": true, "rotateX": 200, "rotateY": 1000}}},
-             "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "bubble"}, "onclick": {"enable": false}}, "modes": {"bubble": {"distance": 80, "size": 35, "duration": 1.5, "opacity": 0.8, "speed": 1.5}}},
-            "retina_detect": true
-        };
-
-        function updateShowcaseTextVisibility() {
-            if (currentTheme === 'pink') {
-                if(pinkShowcaseIntro) pinkShowcaseIntro.style.display = 'block';
-                if(neonShowcaseIntro) neonShowcaseIntro.style.display = 'none';
-                if(pinkPlaceholderTitle) pinkPlaceholderTitle.style.display = 'inline';
-                if(neonPlaceholderTitle) neonPlaceholderTitle.style.display = 'none';
-            } else {
-                if(pinkShowcaseIntro) pinkShowcaseIntro.style.display = 'none';
-                if(neonShowcaseIntro) neonShowcaseIntro.style.display = 'block';
-                if(pinkPlaceholderTitle) pinkPlaceholderTitle.style.display = 'none';
-                if(neonPlaceholderTitle) neonPlaceholderTitle.style.display = 'inline';
-            }
-        }
+        let currentMode = localStorage.getItem(`oc_mode_${currentTheme}`) || defaultModesForThemes[currentTheme];
 
         function applyThemeAndMode() {
-            body.className = ''; body.classList.add(`theme-${currentTheme}`); body.classList.add(`mode-${currentMode}`);
-            modeToggleButton.textContent = currentMode === 'dark' ? '🌙' : '☀️';
-            modeToggleButton.title = currentMode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+            body.className = '';
+            body.classList.add(`theme-${currentTheme}`, `mode-${currentMode}`);
+            modeToggleButton.textContent = currentMode === 'dark' ? '☀️' : '🌙';
             themeNeonButton.classList.toggle('active', currentTheme === 'neon');
             themePinkButton.classList.toggle('active', currentTheme === 'pink');
-            updateShowcaseTextVisibility();
 
-            const computedStyle = getComputedStyle(body); let particleConfigToUse;
-            if (currentTheme === 'pink') {
-                particleConfigToUse = JSON.parse(JSON.stringify(pinkThemeParticlesConfig));
-                const mainPetalColor = computedStyle.getPropertyValue('--particle-color').trim().replace(/"/g, '');
-                particleConfigToUse.particles.shape.image.src = sakuraPetalSVG.replace('#CURRENT_COLOR', mainPetalColor);
-                particleConfigToUse.particles.color.value = mainPetalColor;
-            } else {
-                particleConfigToUse = JSON.parse(JSON.stringify(neonParticlesConfig));
-                particleConfigToUse.particles.color.value = computedStyle.getPropertyValue('--particle-color').trim().replace(/"/g, '');
-                if (particleConfigToUse.particles.line_linked) {
-                   particleConfigToUse.particles.line_linked.color = computedStyle.getPropertyValue('--particle-line-color').trim().replace(/"/g, '');
-                }
-            }
+            const computedStyle = getComputedStyle(body);
+            const particleColor = computedStyle.getPropertyValue('--particle-color').trim().replace(/"/g, '');
+            const particleLineColor = computedStyle.getPropertyValue('--particle-line-color').trim().replace(/"/g, '');
             
-            if (typeof particlesJS !== 'undefined') {
-                if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
-                     window.pJSDom[0].pJS.fn.vendors.destroypJS(); window.pJSDom = [];
-                }
-                particlesJS('particles-js', particleConfigToUse);
-            } else { console.error("particles.js not loaded."); }
-
-            localStorage.setItem('oc_theme', currentTheme);
-            localStorage.setItem(`oc_mode_${currentTheme}`, currentMode);
+            if (window.pJSDom && window.pJSDom[0]) {
+                 window.pJSDom[0].pJS.fn.vendors.destroypJS();
+            }
+             particlesJS('particles-js', { particles: { number: { value: 70 }, color: { value: particleColor }, line_linked: { color: particleLineColor, opacity: 0.3 }, move: { speed: 1.5 } } });
         }
-
+        
         modeToggleButton.addEventListener('click', () => {
             currentMode = currentMode === 'dark' ? 'light' : 'dark';
             localStorage.setItem(`oc_mode_${currentTheme}`, currentMode);
             applyThemeAndMode();
         });
-
         themeNeonButton.addEventListener('click', () => {
-            if (currentTheme !== 'neon') {
-                currentTheme = 'neon';
-                currentMode = localStorage.getItem('oc_mode_neon') || defaultModesForThemes.neon;
-                applyThemeAndMode();
-            }
+            currentTheme = 'neon';
+            currentMode = localStorage.getItem('oc_mode_neon') || defaultModesForThemes.neon;
+            localStorage.setItem('oc_theme', currentTheme);
+            applyThemeAndMode();
         });
-
         themePinkButton.addEventListener('click', () => {
-            if (currentTheme !== 'pink') {
-                currentTheme = 'pink';
-                currentMode = localStorage.getItem('oc_mode_pink') || defaultModesForThemes.pink;
-                applyThemeAndMode();
-            }
+            currentTheme = 'pink';
+            currentMode = localStorage.getItem('oc_mode_pink') || defaultModesForThemes.pink;
+            localStorage.setItem('oc_theme', currentTheme);
+            applyThemeAndMode();
         });
         
         if (openChatButton) {
             openChatButton.addEventListener('click', function(event) {
                 event.preventDefault();
                 const chatUrl = `chat.html?theme=${currentTheme}&mode=${currentMode}`;
-                const chatWindow = window.open(chatUrl, 'ocWorldChat', 'width=500,height=650,resizable=yes,scrollbars=yes');
-                if (chatWindow) {
-                    chatWindow.focus();
+                window.open(chatUrl, 'ocWorldChat', 'width=500,height=650,resizable=yes,scrollbars=yes');
+            });
+        }
+        
+        applyThemeAndMode();
+
+        // --- FIREBASE & MEMBER LIST SCRIPT ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBALj_xmS1OkTpH72oUzavFcyMyxm9MUrw",
+            authDomain: "oc-world-hub-auto-users-add.firebaseapp.com",
+            databaseURL: "https://oc-world-hub-auto-users-add-default-rtdb.firebaseio.com",
+            projectId: "oc-world-hub-auto-users-add",
+            storageBucket: "oc-world-hub-auto-users-add.firebasestorage.app",
+            messagingSenderId: "507194352454",
+            appId: "1:507194352454:web:24b2365cf356b237103b47",
+            measurementId: "G-Q2NWRTPE6Y"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const usersRef = database.ref('users');
+
+        const userListContainer = document.getElementById('user-list-container');
+        
+        function renderUserList(users) {
+            userListContainer.innerHTML = '';
+            if (!users) { userListContainer.innerHTML = '<p>No members found in database. Please run the sync bot.</p>'; return; }
+
+            const categoryRoles = ['Community Hub Website creator', 'Retired Staff', 'Member', '18+', '18-', 'Asia', 'America', 'Africa', 'Europe', 'Australia', 'No Roles'];
+            const allUsersArray = Object.values(users);
+            let isFirstCategory = true;
+            
+            categoryRoles.forEach(roleName => {
+                let membersInCategory = [];
+                if (roleName === 'No Roles') {
+                    membersInCategory = allUsersArray.filter(user => !user.roles || user.roles.length === 0);
                 } else {
-                    alert('Popup blocker might be preventing the chat window from opening. Please allow popups for this site.');
+                    membersInCategory = allUsersArray.filter(user => user.roles && user.roles.includes(roleName));
+                }
+
+                if (membersInCategory.length > 0) {
+                    createCategory(roleName, membersInCategory, isFirstCategory);
+                    isFirstCategory = false; // Only the very first category with members will be expanded
                 }
             });
         }
 
-        applyThemeAndMode();
-        console.log("OC World Hub with Defaults, PFPs, Chat Link, and Text Updates Initialized!");
+        function createCategory(roleName, members, isFirst) {
+            members.sort((a, b) => a.username.localeCompare(b.username));
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.className = 'user-category-title';
+            categoryTitle.textContent = `${roleName} (${members.length})`;
+            userListContainer.appendChild(categoryTitle);
+
+            const memberListDiv = document.createElement('div');
+            memberListDiv.className = 'role-member-list';
+            if(isFirst) {
+                categoryTitle.classList.add('active');
+                memberListDiv.classList.add('active');
+            }
+            userListContainer.appendChild(memberListDiv);
+            
+            members.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                const userPfp = document.createElement('img');
+                userPfp.src = user.avatarURL;
+                userPfp.alt = `${user.username}'s PFP`;
+                userPfp.className = 'user-pfp';
+                userPfp.onerror = function() { this.src = 'assets/server-logo-placeholder.png'; };
+                const username = document.createElement('span');
+                username.className = 'username';
+                username.textContent = user.username;
+                userItem.appendChild(userPfp);
+                userItem.appendChild(username);
+                memberListDiv.appendChild(userItem);
+            });
+        }
+        
+        userListContainer.addEventListener('click', function(event) {
+            if (event.target.classList.contains('user-category-title')) {
+                const title = event.target;
+                const memberList = title.nextElementSibling;
+                title.classList.toggle('active');
+                if (memberList) memberList.classList.toggle('active');
+            }
+        });
+
+        usersRef.on('value', (snapshot) => { renderUserList(snapshot.val()); }, (error) => {
+             console.error("Firebase read failed: " + error.code);
+             userListContainer.innerHTML = '<p>Error connecting to database.</p>';
+        });
     });
     </script>
 </body>
