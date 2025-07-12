@@ -403,10 +403,12 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- THEME & PARTICLES SCRIPT ---
         const body = document.body;
         const modeToggleButton = document.getElementById('modeToggle');
         const themeNeonButton = document.getElementById('themeNeon');
         const themePinkButton = document.getElementById('themePink');
+        const openChatButton = document.getElementById('openChatWindow');
 
         const defaultModesForThemes = { neon: 'dark', pink: 'light' };
         let currentTheme = localStorage.getItem('oc_theme') || 'neon';
@@ -446,8 +448,18 @@
             localStorage.setItem('oc_theme', currentTheme);
             applyThemeAndMode();
         });
+        
+        if (openChatButton) {
+            openChatButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                const chatUrl = `chat.html?theme=${currentTheme}&mode=${currentMode}`;
+                window.open(chatUrl, 'ocWorldChat', 'width=500,height=650,resizable=yes,scrollbars=yes');
+            });
+        }
+        
         applyThemeAndMode();
 
+        // --- FIREBASE & MEMBER LIST SCRIPT ---
         const firebaseConfig = {
             apiKey: "AIzaSyBALj_xmS1OkTpH72oUzavFcyMyxm9MUrw",
             authDomain: "oc-world-hub-auto-users-add.firebaseapp.com",
@@ -467,12 +479,13 @@
         
         function renderUserList(users) {
             userListContainer.innerHTML = '';
-            if (!users) { userListContainer.innerHTML = '<p>Could not load members.</p>'; return; }
+            if (!users) { userListContainer.innerHTML = '<p>No members found in database. Please run the sync bot.</p>'; return; }
 
             const categoryRoles = ['Community Hub Website creator', 'Retired Staff', 'Member', '18+', '18-', 'Asia', 'America', 'Africa', 'Europe', 'Australia', 'No Roles'];
             const allUsersArray = Object.values(users);
+            let isFirstCategory = true;
             
-            categoryRoles.forEach((roleName, index) => {
+            categoryRoles.forEach(roleName => {
                 let membersInCategory = [];
                 if (roleName === 'No Roles') {
                     membersInCategory = allUsersArray.filter(user => !user.roles || user.roles.length === 0);
@@ -481,7 +494,8 @@
                 }
 
                 if (membersInCategory.length > 0) {
-                    createCategory(roleName, membersInCategory, index === 0);
+                    createCategory(roleName, membersInCategory, isFirstCategory);
+                    isFirstCategory = false; // Only the very first category with members will be expanded
                 }
             });
         }
